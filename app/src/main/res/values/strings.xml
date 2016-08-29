@@ -1,0 +1,27 @@
+<resources>
+    <string name="app_name">GitHubClient</string>
+    <string name="main_activity_title">My repos</string>
+    <string name="search_activity_title">Search Results</string>
+
+    <!-- Strings related to login -->
+    <string name="prompt_username">Username or email</string>
+    <string name="prompt_password">Password</string>
+    <string name="action_sign_in">Sign in</string>
+    <string name="action_sign_in_short">Sign in</string>
+
+    <string name="search_hint">Search GitHub</string>
+    <string name="menu_search">Search</string>
+    <string name="menu_sign_out">Sign out</string>
+
+
+    <string name="message_authentification_fail">Incorrect username or password.</string>
+    <string name="message_sign_out_dialog">Enter your password.</string>
+    <string name="prompt_no_repo_desc">There is no description for this repo.</string>
+
+    <string name="token_params_note">AndroidGitHubClient</string>
+    <string-array name="token_params_scopes">
+        <item>repo</item>
+    </string-array>
+
+    <string name="error_unauthorized">401 Unauthorized</string>
+</resources>
