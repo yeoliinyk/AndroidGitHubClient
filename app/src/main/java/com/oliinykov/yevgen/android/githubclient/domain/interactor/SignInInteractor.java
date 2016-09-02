@@ -11,7 +11,7 @@ import retrofit.Callback;
 /**
  * This class is a use case for performing user authorization.
  */
-public class LoginInteractor {
+public class SignInInteractor {
 
     public void attemptLogin(final String username, final String password, final AuthorizationRequestBody requestBody,
                              final Callback<AuthorizationResponseBody> callback) {

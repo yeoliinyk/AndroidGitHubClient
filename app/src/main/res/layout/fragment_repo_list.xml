@@ -3,12 +3,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
-    <FrameLayout
-        android:id="@+id/fl_main_fragment_container"
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/rv_repo_list"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
-
-    <include
-        layout="@layout/view_progress"/>
+        android:layout_height="match_parent"
+        android:scrollbars="vertical"/>
 
 </RelativeLayout>

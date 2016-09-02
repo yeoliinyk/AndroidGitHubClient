@@ -3,11 +3,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/rv_search_results"
+    <FrameLayout
+        android:id="@+id/fl_search_fragment_container"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:scrollbars="vertical"/>
+        android:layout_height="match_parent"/>
 
     <include
         layout="@layout/view_progress"/>

@@ -6,7 +6,7 @@ import android.text.TextUtils;
 import com.oliinykov.yevgen.android.githubclient.R;
 import com.oliinykov.yevgen.android.githubclient.domain.entity.AuthorizationRequestBody;
 import com.oliinykov.yevgen.android.githubclient.domain.entity.AuthorizationResponseBody;
-import com.oliinykov.yevgen.android.githubclient.domain.interactor.LoginInteractor;
+import com.oliinykov.yevgen.android.githubclient.domain.interactor.SignInInteractor;
 import com.oliinykov.yevgen.android.githubclient.presentation.view.LoginView;
 import com.oliinykov.yevgen.android.githubclient.utils.PrefHelper;
 
@@ -20,13 +20,13 @@ import retrofit.client.Response;
 public class LoginPresenter implements Presenter {
 
     private LoginView mLoginView;
-    private LoginInteractor mLoginInteractor;
+    private SignInInteractor mLoginInteractor;
     private Context mContext;
     private String mUsername;
 
     public LoginPresenter(LoginView loginView, Context context) {
         this.mLoginView = loginView;
-        this.mLoginInteractor = new LoginInteractor();
+        this.mLoginInteractor = new SignInInteractor();
         this.mContext = context;
     }
 

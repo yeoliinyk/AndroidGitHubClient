@@ -47,7 +47,7 @@ public class RepoAdapter extends RecyclerView.Adapter<RepoAdapter.RepoViewHolder
         return (mReposCollection != null) ? mReposCollection.size() : 0;
     }
 
-    public void setReposCollection(Collection<Repo> reposCollection) {
+    public void setRepoCollection(Collection<Repo> reposCollection) {
         validateReposCollection(reposCollection);
         mReposCollection = (List<Repo>) reposCollection;
         notifyDataSetChanged();

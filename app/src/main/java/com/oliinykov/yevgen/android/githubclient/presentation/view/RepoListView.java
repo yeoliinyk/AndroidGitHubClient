@@ -7,8 +7,8 @@ import java.util.Collection;
 /**
  * Interface (V in MVP pattern) representing a list of {@link Repo}.
  */
-public interface RepoListView extends DataLoadView {
+public interface RepoListView {
 
-    void renderReposList(Collection<Repo> reposCollection);
+    void renderRepoList(Collection<Repo> repoCollection);
 
 }

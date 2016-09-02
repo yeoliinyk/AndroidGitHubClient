@@ -1,5 +1,6 @@
 package com.oliinykov.yevgen.android.githubclient.presentation.view.activity;
 
+import android.app.Fragment;
 import android.app.SearchManager;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -8,9 +9,6 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
 import android.text.InputType;
 import android.view.Menu;
@@ -24,20 +22,22 @@ import com.oliinykov.yevgen.android.githubclient.domain.entity.Repo;
 import com.oliinykov.yevgen.android.githubclient.presentation.navigation.Navigator;
 import com.oliinykov.yevgen.android.githubclient.presentation.presenter.MainPresenter;
 import com.oliinykov.yevgen.android.githubclient.presentation.view.MainView;
-import com.oliinykov.yevgen.android.githubclient.presentation.view.adapter.RepoAdapter;
-import com.oliinykov.yevgen.android.githubclient.presentation.view.adapter.SimpleLineDivider;
+import com.oliinykov.yevgen.android.githubclient.presentation.view.RepoListView;
+import com.oliinykov.yevgen.android.githubclient.presentation.view.fragment.RepoListFragment;
 
 import java.util.Collection;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
 
 /**
  * A main screen that represents user repositories.
  */
-public class MainActivity extends AppCompatActivity implements MainView {
+public class MainActivity extends BaseActivity implements MainView {
 
-    private RecyclerView mReposListView;
-    private RelativeLayout mProgress;
-    private RepoAdapter mRepoAdapter;
+    @BindView(R.id.rl_progress) RelativeLayout mProgress;
     private MainPresenter mPresenter;
+    private RepoListView mUserReposView;
 
     public static Intent getCallingIntent(Context context) {
         return new Intent(context, MainActivity.class);
@@ -75,26 +75,34 @@ public class MainActivity extends AppCompatActivity implements MainView {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
+        ButterKnife.bind(this);
         mPresenter = new MainPresenter(this, getApplicationContext());
-        mReposListView = (RecyclerView) findViewById(R.id.rv_user_repos);
-        mProgress = (RelativeLayout) findViewById(R.id.rl_progress);
 
-        setupRecyclerView();
-        mPresenter.getReposList();
+        if (savedInstanceState == null) {
+            mUserReposView = new RepoListFragment();
+            addFragment(R.id.fl_main_fragment_container, (Fragment) mUserReposView, RepoListFragment.TAG);
+        } else {
+            mUserReposView = (RepoListView) getFragmentById(R.id.fl_main_fragment_container);
+        }
+        mPresenter.getUserRepoList();
     }
+
 
     @Override
     protected void onDestroy() {
-        mPresenter.onDestroy();
-        mPresenter = null;
-        mReposListView.setAdapter(null);
         super.onDestroy();
+        mPresenter.onDestroy();
+        mUserReposView = null;
     }
 
     @Override
-    public void renderReposList(Collection<Repo> reposCollection) {
-        mRepoAdapter.setReposCollection(reposCollection);
+    public void navigateToLogin() {
+        Navigator.navigateToLogin(this);
+    }
+
+    @Override
+    public void renderUserRepoList(Collection<Repo> userRepoCollection) {
+        mUserReposView.renderRepoList(userRepoCollection);
     }
 
     @Override
@@ -105,19 +113,6 @@ public class MainActivity extends AppCompatActivity implements MainView {
     @Override
     public void showErrorMessage(String errorMessage) {
 
-    }
-
-
-    @Override
-    public void navigateToLogin() {
-        Navigator.navigateToLogin(this);
-    }
-
-    private void setupRecyclerView() {
-        mReposListView.setLayoutManager(new LinearLayoutManager(this));
-        mReposListView.addItemDecoration(new SimpleLineDivider(this));
-        mRepoAdapter = new RepoAdapter(getApplicationContext());
-        mReposListView.setAdapter(mRepoAdapter);
     }
 
     private void showSignOutDialog() {
@@ -141,4 +136,5 @@ public class MainActivity extends AppCompatActivity implements MainView {
         });
         builder.show();
     }
+
 }

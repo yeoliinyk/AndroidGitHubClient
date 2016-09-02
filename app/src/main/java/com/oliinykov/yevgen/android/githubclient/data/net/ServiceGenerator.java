@@ -1,7 +1,6 @@
 package com.oliinykov.yevgen.android.githubclient.data.net;
 
 import android.util.Base64;
-import android.util.Log;
 
 import com.squareup.okhttp.OkHttpClient;
 
@@ -20,11 +19,9 @@ public class ServiceGenerator {
             new RestAdapter.Builder()
                     .setEndpoint(BASE_URL)
                     .setClient(new OkClient(new OkHttpClient()));
-    //.setLogLevel(RestAdapter.LogLevel.FULL)
 
     public static <S> S createService(Class<S> serviceClass, final String username, final String password) {
         if (username != null && password != null) {
-            Log.v(ServiceGenerator.class.getSimpleName(), "Credentials: " + username + ":" + password);
             final String credentials = username + ":" + password;
             final String encodedCredentials = "Basic " + Base64.encodeToString(credentials.getBytes(), Base64.NO_WRAP);
 

@@ -1,8 +1,8 @@
 package com.oliinykov.yevgen.android.githubclient.presentation.presenter;
 
 import com.oliinykov.yevgen.android.githubclient.domain.entity.SearchResponseBody;
-import com.oliinykov.yevgen.android.githubclient.domain.interactor.SearchResultsInteractor;
-import com.oliinykov.yevgen.android.githubclient.presentation.view.RepoListView;
+import com.oliinykov.yevgen.android.githubclient.domain.interactor.SearchInteractor;
+import com.oliinykov.yevgen.android.githubclient.presentation.view.SearchView;
 
 import retrofit.Callback;
 import retrofit.RetrofitError;
@@ -13,21 +13,21 @@ import retrofit.client.Response;
  */
 public class SearchResultsPresenter implements Presenter {
 
-    private RepoListView mView;
-    private SearchResultsInteractor mIntercator;
+    private SearchView mView;
+    private SearchInteractor mSearchIntercator;
 
-    public SearchResultsPresenter(RepoListView view) {
+    public SearchResultsPresenter(SearchView view) {
         this.mView = view;
-        this.mIntercator = new SearchResultsInteractor();
+        this.mSearchIntercator = new SearchInteractor();
     }
 
 
     public void getSearchResultsByBestMatch(String query) {
         mView.showProgress(true);
-        mIntercator.loadSearchResults(query, null, null, new Callback<SearchResponseBody>() {
+        mSearchIntercator.loadSearchResults(query, null, null, new Callback<SearchResponseBody>() {
             @Override
             public void success(SearchResponseBody body, Response response) {
-                mView.renderReposList(body.getRepos());
+                mView.renderSearchRepoList(body.getRepos());
                 mView.showProgress(false);
             }
 

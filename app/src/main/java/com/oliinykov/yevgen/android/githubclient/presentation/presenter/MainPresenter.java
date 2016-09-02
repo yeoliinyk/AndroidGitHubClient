@@ -4,7 +4,8 @@ import android.content.Context;
 
 import com.oliinykov.yevgen.android.githubclient.R;
 import com.oliinykov.yevgen.android.githubclient.domain.entity.Repo;
-import com.oliinykov.yevgen.android.githubclient.domain.interactor.MainInteractor;
+import com.oliinykov.yevgen.android.githubclient.domain.interactor.RepoListInteractor;
+import com.oliinykov.yevgen.android.githubclient.domain.interactor.SignOutInteractor;
 import com.oliinykov.yevgen.android.githubclient.presentation.view.MainView;
 import com.oliinykov.yevgen.android.githubclient.utils.PrefHelper;
 
@@ -21,21 +22,23 @@ public class MainPresenter implements Presenter {
 
     private MainView mView;
     private Context mContext;
-    private MainInteractor mInteractor;
+    private RepoListInteractor mUserRepoInteractor;
+    private SignOutInteractor mSignOutInteractor;
 
     public MainPresenter(MainView mainView, Context context) {
         this.mView = mainView;
         this.mContext = context;
-        this.mInteractor = new MainInteractor();
+        this.mUserRepoInteractor = new RepoListInteractor();
+        this.mSignOutInteractor = new SignOutInteractor();
     }
 
-    public void getReposList() {
+    public void getUserRepoList() {
         mView.showProgress(true);
         String token = PrefHelper.getStringFromPreferences(mContext, PrefHelper.PREFS_AUTH_TOKEN_KEY);
-        mInteractor.loadUserRepos(token, new Callback<List<Repo>>() {
+        mUserRepoInteractor.loadUserRepos(token, new Callback<List<Repo>>() {
             @Override
             public void success(List<Repo> repos, Response response) {
-                mView.renderReposList(repos);
+                mView.renderUserRepoList(repos);
                 mView.showProgress(false);
             }
 
@@ -51,10 +54,11 @@ public class MainPresenter implements Presenter {
         });
     }
 
+
     public void signOut(String password) {
         int authorizationId = PrefHelper.getIntFromPreferences(mContext, PrefHelper.PREFS_AUTH_ID_KEY);
         String username = PrefHelper.getStringFromPreferences(mContext, PrefHelper.PREFS_USERNAME_KEY);
-        mInteractor.deleteUserAuthorization(authorizationId, username, password, new Callback<Response>() {
+        mSignOutInteractor.deleteUserAuthorization(authorizationId, username, password, new Callback<Response>() {
             @Override
             public void success(Response response, Response response2) {
                 if (response.getStatus() == 204) {
@@ -71,13 +75,15 @@ public class MainPresenter implements Presenter {
 
     }
 
+    private void invalidateUserToken() {
+        PrefHelper.removeStringFromPreferences(mContext, PrefHelper.PREFS_AUTH_TOKEN_KEY);
+    }
+
     @Override
     public void onDestroy() {
         mView = null;
     }
 
-    private void invalidateUserToken() {
-        PrefHelper.removeStringFromPreferences(mContext, PrefHelper.PREFS_AUTH_TOKEN_KEY);
-    }
+
 }
 

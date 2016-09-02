@@ -10,7 +10,7 @@ import retrofit.Callback;
 /**
  * This class is a use case for retrieving GitHub {@link Repo} list by search query.
  */
-public class SearchResultsInteractor {
+public class SearchInteractor {
 
     public void loadSearchResults(String query, String sort, String order, Callback<SearchResponseBody> callback) {
         SearchService searchService = ServiceGenerator.createService(SearchService.class);
